@@ -16,16 +16,16 @@ const __dirname = dirname(__filename);
 const app = express()
 
 app.use(express.static(__dirname))
-app.use(express.static(path.resolve(__dirname, 'build')))
+app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(bodyParser.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(cors({ allowedHeaders: "*", allowMethods: "*", origin: '*' }))
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
-app.post('/email', async (req, res) => {
+app.post('/message', async (req, res) => {
     const { name, number } = req.body;
     const message = encodeURI(`<b>Имя:</b> ${name}\n<b>Телефон:</b> <a href="tel:${number}">${number}</a>`)
     res.setHeader()
@@ -33,7 +33,7 @@ app.post('/email', async (req, res) => {
     try {
         await axios.post(`https://api.telegram.org/bot${process.env.TOKEN_BOT}/sendMessage?chat_id=${process.env.CHAT_ID}&parse_mode=html&text=${message}`)
         res.send({ reslut: true })
-    } catch(error) {
+    } catch (error) {
         console.log(error)
         res.send({ reslut: false })
     }
