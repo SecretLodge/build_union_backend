@@ -18,7 +18,7 @@ const app = express()
 app.use(express.static(__dirname))
 app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(bodyParser.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors({ allowedHeaders: "*", allowMethods: "*", origin: '*' }))
 
 app.get('*', (req, res) => {
